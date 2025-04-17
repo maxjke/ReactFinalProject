@@ -1,15 +1,16 @@
 const mongoose = require('mongoose')
 
 const ComputerSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  available: { type: Boolean, default: true },
-  gpu: { type: String, required: true },
-  cpu: { type: String, required: true },
-  ram: { type: String, required: true },
-  motherboard: { type: String, required: true },
-  table: { type: Number, required: true },
+  name: String,
+  available: Boolean,
+  gpu: String,
+  cpu: String,
+  ram: String,
+  motherboard: String,
+  table: Number,
   reserved: { type: Boolean, default: false },
-  reservedBy: { type: String },
+  reservedBy: String,
+  reservationTime: Date,
   createdAt: { type: Date, default: Date.now }
 })
 

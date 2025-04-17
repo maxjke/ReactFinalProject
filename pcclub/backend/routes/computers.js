@@ -33,19 +33,40 @@ router.post('/', async (req, res) => {
 })
 
 router.put('/:id', async (req, res) => {
-  const { name, available, gpu, cpu, ram, motherboard, table, reserved, reservedBy } = req.body
+  const {
+    name,
+    available,
+    gpu,
+    cpu,
+    ram,
+    motherboard,
+    table,
+    reserved,
+    reservedBy,
+    reservationTime
+  } = req.body
+
   try {
-    let computer = await Computer.findById(req.params.id)
+    const computer = await Computer.findById(req.params.id)
     if (!computer) return res.status(404).json({ message: "Kompiuteris nerastas" })
-    computer.name = name || computer.name
-    computer.available = available !== undefined ? available : computer.available
-    computer.gpu = gpu || computer.gpu
-    computer.cpu = cpu || computer.cpu
-    computer.ram = ram || computer.ram
-    computer.motherboard = motherboard || computer.motherboard
-    computer.table = table !== undefined ? table : computer.table
-    computer.reserved = reserved !== undefined ? reserved : computer.reserved
-    computer.reservedBy = reservedBy || computer.reservedBy
+
+    if (name !== undefined)           computer.name = name
+    if (available !== undefined)      computer.available = available
+    if (gpu !== undefined)            computer.gpu = gpu
+    if (cpu !== undefined)            computer.cpu = cpu
+    if (ram !== undefined)            computer.ram = ram
+    if (motherboard !== undefined)    computer.motherboard = motherboard
+    if (table !== undefined)          computer.table = table
+    if (reserved !== undefined)       computer.reserved = reserved
+    if (reservedBy !== undefined)     computer.reservedBy = reservedBy
+
+    if (reservationTime !== undefined) {
+      // if reservationTime is null, clear field; otherwise parse and set
+      computer.reservationTime = reservationTime
+        ? new Date(reservationTime)
+        : null
+    }
+
     await computer.save()
     res.json(computer)
   } catch (err) {

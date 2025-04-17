@@ -61,7 +61,6 @@ router.put('/:id', async (req, res) => {
     if (reservedBy !== undefined)     computer.reservedBy = reservedBy
 
     if (reservationTime !== undefined) {
-      // if reservationTime is null, clear field; otherwise parse and set
       computer.reservationTime = reservationTime
         ? new Date(reservationTime)
         : null
